@@ -19,10 +19,13 @@ export class Modal extends Component {
       this.props.handleClose();
     }
   };
+  handleClose = () => {
+    this.props.handleClose();
+  };
   // клік за межами модалки
   handleBackdropClick = e => {
     if (e.currentTarget === e.target) {
-      this.props.handleClose();
+      this.props.handleClose(); 
     }
   };
 
@@ -38,3 +41,4 @@ export class Modal extends Component {
 
 
 export default Modal;
+

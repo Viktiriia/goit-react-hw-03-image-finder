@@ -41,16 +41,11 @@ export class App extends Component {
     }
     }
   componentDidUpdate(_, prevState) {
-    if (prevState.searchQuery !== this.state.searchQuery) {
+    const {searchQuery, page} = this.state;
+    if (prevState.searchQuery !== searchQuery || prevState.page !== page) {
       this.setState({ loading: true, cards: [] });    // скидання стану компонента
-      this.fetchPhotosImg (this.state.searchQuery)
+      this.fetchPhotosImg (searchQuery, page)
     }
-// перевірка стану пейдж з попереднім, додавання картинок та оновлюю cards
-  if (prevState.page !== this.state.page) {
-
-      this.setState({ loading: true });
-      this.fetchPhotosImg (this.state.searchQuery, this.state.page) 
-  }
 }
 // лодер, підвантажує зображеня
   addPage = () => {
@@ -65,6 +60,11 @@ export class App extends Component {
       forModalLink: link,
     });
   };
+  closeModal = () => {
+    this.setState({
+      showModal: false,
+    });
+  };
 
   // надсилаю форму пошуку та скидаю page
   handleFormSubmit = searchText => {
@@ -73,6 +73,7 @@ export class App extends Component {
 
   render() {
     const { loading, cards, showModal, forModalLink, loadMore } = this.state;
+    
     return (
       
       <AppWrapper>
@@ -85,11 +86,13 @@ export class App extends Component {
         {loadMore && (
           <Button handleClick={this.addPage}></Button>
         )}
-        {showModal && (
-          <Modal handleClose={this.showModal}>
-            <img src={forModalLink} alt="" />
-          </Modal>
-        )}
+       {showModal && (
+  <Modal handleClose={this.closeModal}>
+    <img src={forModalLink} alt="" />
+  </Modal>
+)}
+       
+        
       </AppWrapper>  
     );
   }
