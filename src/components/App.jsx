@@ -8,6 +8,7 @@ import { Loader } from './Loader/Loader';
 import { Button } from './Button/Button';
 import { Modal } from './Modal/Modal';
 import { AppWrapper } from './App.styled';
+import { scrollToBottom } from 'utils/scroll';
 
 
 export class App extends Component {
@@ -42,8 +43,10 @@ export class App extends Component {
     }
   componentDidUpdate(_, prevState) {
     const {searchQuery, page} = this.state;
-    if (prevState.searchQuery !== searchQuery || prevState.page !== page) {
+     if (prevState.searchQuery !== searchQuery) {
       this.setState({ loading: true, cards: [] });    // скидання стану компонента
+    }
+    if (prevState.searchQuery !== searchQuery || prevState.page !== page) {
       this.fetchPhotosImg (searchQuery, page)
     }
 }
@@ -52,6 +55,7 @@ export class App extends Component {
     this.setState(prevState => ({
       page: prevState.page + 1,
     }));
+    scrollToBottom()
   };
 
   showModal = link => {
